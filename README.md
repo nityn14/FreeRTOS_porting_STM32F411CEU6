@@ -80,7 +80,7 @@ rtos/portable/Memmanage
 
 ---
 
-# Method 2 — Link External FreeRTOS Folder (Advanced)
+# Method 2 — Link External FreeRTOS Folder
 
 Instead of copying the kernel, an external folder can be linked.
 
