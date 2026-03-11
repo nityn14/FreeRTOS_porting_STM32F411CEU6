@@ -145,4 +145,7 @@ Project → Build
 • Demonstrates **manual FreeRTOS porting**.
 • Kernel sources and configuration are kept inside the `rtos` directory.
 • External linking allows multiple projects to share the same FreeRTOS source.
+• I have used STM32F411CEU6 Board, While using other boards do not forget to include the neccessary (eg. STM32Cube_FW_F4 Drivers) paths for your board.
+• Edit the FreeRTOSConfig.h file for your usage/different board.
+
 
