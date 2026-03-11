@@ -8,7 +8,7 @@ Target MCU: **STM32F411**
 
 # Project Structure
 
-```id="x1"
+```
 bp_vera_path
 │
 ├── Src
@@ -16,10 +16,20 @@ bp_vera_path
 ├── Startup
 └── rtos
      ├── include
+     │    ├── FreeRTOS.h
+     │    ├── task.h
+     │    ├── queue.h
+     │    ├── semphr.h
+     │    ├── timers.h
+     │    └── ...
      ├── portable
-     │     ├── GCC/ARM_CM4F
-     │     └── MemMang
+     │    ├── GCC/ARM_CM4F
+     │    │    ├── port.c
+     │    │    └── portmacro.h
+     │    └── Memmanage
+     │         └── heap_4.c
      ├── FreeRTOSConfig.h
+     ├── croutine.c
      ├── tasks.c
      ├── queue.c
      ├── list.c
@@ -38,33 +48,34 @@ Copy the FreeRTOS kernel into the project directory.
 
 Required kernel files:
 
-```id="x2"
+```
 tasks.c
 queue.c
 list.c
 timers.c
 event_groups.c
 stream_buffer.c
+croutine.c
 ```
 
 Port layer:
 
-```id="x3"
+```
 portable/GCC/ARM_CM4F/port.c
 ```
 
 Memory manager:
 
-```id="x4"
-portable/MemMang/heap_4.c
+```
+portable/Memmanage/heap_4.c
 ```
 
 Include directories:
 
-```id="x5"
+```
 rtos/include
 rtos/portable/GCC/ARM_CM4F
-rtos/portable/MemMang
+rtos/portable/Memmanage
 ```
 
 ---
@@ -75,33 +86,33 @@ Instead of copying the kernel, an external folder can be linked.
 
 Example location:
 
-```id="x6"
+```
 /home/user/Documents/rtos
 ```
 
 Steps:
 
 1. Right click project → **New → Folder**
-2. Select
-   **Advanced → Link to alternate location**
-3. Choose the external `rtos` directory.
+2. Select **Advanced → Link to alternate location**
+3. Choose the external `rtos` directory
 4. Add include paths:
 
-```id="x7"
+```
 /home/user/Documents/rtos/include
 /home/user/Documents/rtos/portable/GCC/ARM_CM4F
-/home/user/Documents/rtos/portable/MemMang
+/home/user/Documents/rtos/portable/Memmanage
 ```
 
 Ensure the following files are compiled:
 
-```id="x8"
+```
 tasks.c
 queue.c
 list.c
 timers.c
 event_groups.c
 stream_buffer.c
+croutine.c
 port.c
 heap_4.c
 ```
@@ -110,7 +121,7 @@ heap_4.c
 
 # Build
 
-```id="x9"
+```
 Project → Clean
 Project → Build
 ```
