@@ -1,35 +1,44 @@
-# FreeRTOS Porting on STM32 (STM32F411 / Cortex-M4)
+# STM32 FreeRTOS Manual Port (STM32F411)
 
-This project demonstrates **manual FreeRTOS porting on STM32** using STM32CubeIDE.
+This project demonstrates **manual FreeRTOS integration on STM32F4 (Cortex-M4)** using **STM32CubeIDE**, without CubeMX RTOS middleware.
 
-Two methods can be used to include FreeRTOS in the project.
+Target MCU: **STM32F411**
 
 ---
 
-# Method 1 — Copy FreeRTOS into Project (Recommended)
+# Project Structure
 
-Place the FreeRTOS kernel inside the project directory.
-
-```
-project/
+```id="x1"
+bp_vera_path
 │
 ├── Src
 ├── Inc
 ├── Startup
-└── FreeRTOS
+└── rtos
      ├── include
      ├── portable
-     └── source files
+     │     ├── GCC/ARM_CM4F
+     │     └── MemMang
+     ├── FreeRTOSConfig.h
+     ├── tasks.c
+     ├── queue.c
+     ├── list.c
+     ├── timers.c
+     ├── event_groups.c
+     └── stream_buffer.c
 ```
 
-### Steps
+`FreeRTOSConfig.h` is placed inside the **rtos folder** along with kernel sources.
 
-1. Download FreeRTOS kernel.
-2. Copy these files into the project.
+---
 
-Kernel source files:
+# Method 1 — Copy FreeRTOS into Project
 
-```
+Copy the FreeRTOS kernel into the project directory.
+
+Required kernel files:
+
+```id="x2"
 tasks.c
 queue.c
 list.c
@@ -40,73 +49,53 @@ stream_buffer.c
 
 Port layer:
 
-```
+```id="x3"
 portable/GCC/ARM_CM4F/port.c
 ```
 
 Memory manager:
 
-```
+```id="x4"
 portable/MemMang/heap_4.c
 ```
 
-3. Add include paths in STM32CubeIDE:
+Include directories:
 
+```id="x5"
+rtos/include
+rtos/portable/GCC/ARM_CM4F
+rtos/portable/MemMang
 ```
-FreeRTOS/include
-FreeRTOS/portable/GCC/ARM_CM4F
-FreeRTOS/portable/MemMang
-```
-
-4. Add `FreeRTOSConfig.h` in the `Inc` folder.
-
-5. Build the project.
 
 ---
 
 # Method 2 — Link External FreeRTOS Folder (Advanced)
 
-Instead of copying FreeRTOS, you can **link an external directory**.
+Instead of copying the kernel, an external folder can be linked.
 
-Example FreeRTOS location:
+Example location:
 
-```
+```id="x6"
 /home/user/Documents/rtos
 ```
 
-### Steps
+Steps:
 
-1. Right click project
-
-```
-New → Folder
-```
-
-2. Click
-
-```
-Advanced → Link to alternate location
-```
-
-3. Select the FreeRTOS directory.
-
-Example:
-
-```
-/home/user/Documents/rtos
-```
-
+1. Right click project → **New → Folder**
+2. Select
+   **Advanced → Link to alternate location**
+3. Choose the external `rtos` directory.
 4. Add include paths:
 
-```
+```id="x7"
 /home/user/Documents/rtos/include
 /home/user/Documents/rtos/portable/GCC/ARM_CM4F
 /home/user/Documents/rtos/portable/MemMang
 ```
 
-5. Ensure these files are compiled:
+Ensure the following files are compiled:
 
-```
+```id="x8"
 tasks.c
 queue.c
 list.c
@@ -119,18 +108,30 @@ heap_4.c
 
 ---
 
-# Notes
+# Build
 
-• Method 1 is **simpler and recommended for beginners**.
-• Method 2 allows **multiple projects to share the same FreeRTOS source**.
-• If the external folder is moved or deleted, the project will fail to build.
+```id="x9"
+Project → Clean
+Project → Build
+```
 
 ---
 
-# Target
+# Environment
 
-* MCU: STM32F411 (Cortex-M4)
-* Toolchain: ARM GCC
-* IDE: STM32CubeIDE
-* RTOS: FreeRTOS
+| Component | Value         |
+| --------- | ------------- |
+| MCU       | STM32F411     |
+| Core      | ARM Cortex-M4 |
+| IDE       | STM32CubeIDE  |
+| Toolchain | ARM GCC       |
+| RTOS      | FreeRTOS      |
+
+---
+
+# Notes
+
+• Demonstrates **manual FreeRTOS porting**.
+• Kernel sources and configuration are kept inside the `rtos` directory.
+• External linking allows multiple projects to share the same FreeRTOS source.
 
